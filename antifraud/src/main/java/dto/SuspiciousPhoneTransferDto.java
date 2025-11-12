@@ -1,0 +1,15 @@
+package dto;
+
+
+import lombok.Data;
+
+
+@Data
+public class SuspiciousPhoneTransferDto {
+
+    private int id;
+    private boolean isBlocked;
+    private boolean isSuspicious;
+    private String blokedReason;
+
+}
