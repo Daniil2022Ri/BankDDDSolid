@@ -7,7 +7,6 @@ import java.time.LocalTime;
 
 @Data
 public class AuditDto {
-
     private String entityType;
     private String operationType;
     private String createdBy;

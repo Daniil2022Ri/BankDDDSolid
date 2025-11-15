@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class SuspiciousCardTransferDto {
 
-    private int id;
+    private Long id;
     private boolean isBlocked;
     private boolean isSuspicious;
     private String blockedReason;

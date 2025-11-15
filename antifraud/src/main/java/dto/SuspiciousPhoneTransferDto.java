@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class SuspiciousPhoneTransferDto {
 
-    private int id;
+    private Long id;
     private boolean isBlocked;
     private boolean isSuspicious;
     private String blokedReason;

@@ -9,16 +9,17 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Entity
 @Data
+@AllArgsConstructor
 @Table(name = "Account_transfets")
 public class SuspiciousAccountTransfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
-    @Column(name = "bloked")
-    private boolean bloked;
+    @Column(name = "blocked")
+    private boolean blocked;
 
     @Column(name = "suspicious")
     private boolean suspicious;

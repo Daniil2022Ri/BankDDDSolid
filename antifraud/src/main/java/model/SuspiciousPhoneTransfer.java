@@ -12,7 +12,7 @@ public class SuspiciousPhoneTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Phone_id")
-    private int id;
+    private Long id;
 
     @Column(name = "is_blocked")
     private boolean blocked;

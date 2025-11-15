@@ -8,7 +8,6 @@ import lombok.Data;
 import java.time.LocalTime;
 
 @Entity
-
 @Data
 @Table(name = "anti_fraud")
 public class Audit {
