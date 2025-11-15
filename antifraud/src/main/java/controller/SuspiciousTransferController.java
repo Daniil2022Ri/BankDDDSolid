@@ -12,7 +12,5 @@ import service.SuspiciousTransferServiceImpl;
 @AllArgsConstructor
 public class SuspiciousTransferController {
 
-    @Autowired
-    private final SuspiciousTransferServiceImpl suspiciousTransferServiceImpl;
 
 }

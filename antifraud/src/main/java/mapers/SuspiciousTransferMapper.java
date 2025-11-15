@@ -11,10 +11,4 @@ import org.springframework.stereotype.Service;
 
 @Mapper(componentModel = "spring")
 public interface SuspiciousTransferMapper {
-    SuspiciousCardTransfer toCardEntity(SuspiciousCardTransferDto dto);
-    SuspiciousCardTransferDto toCardDto(SuspiciousCardTransfer entity);
-    SuspiciousPhoneTransfer toPhoneEntity(SuspiciousPhoneTransferDto dto);
-    SuspiciousPhoneTransferDto toPhoneDto(SuspiciousPhoneTransfer entity);
-    SuspiciousAccountTransfer toAccountEntity(SuspiciousAccountTransferDto dto);
-    SuspiciousAccountTransferDto toAccountDto(SuspiciousAccountTransfer entity);
 }

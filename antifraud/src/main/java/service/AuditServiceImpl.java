@@ -41,40 +41,5 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public void logCreate(String entityType, Object newEntity) {
-        Audit audit = new Audit();
-        audit.setEntityType(entityType);
-        audit.setOperationType("CREATE");
-        audit.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-        audit.setCreatedAt(LocalDateTime.now());
-        try {
-            audit.setNewEntityJson(objectMapper.writeValueAsString(newEntity));
-            audit.setEntityJson(null);  // Нет старого
-        } catch (JsonProcessingException e) {
-            // Обработка ошибки
-        }
-        auditRepository.save(audit);
     }
-
-    @Override
-    public void logUpdate(String entityType, Object oldEntity, Object newEntity) {
-        Audit audit = new Audit();
-        audit.setEntityType(entityType);
-        audit.setOperationType("UPDATE");
-        audit.setModifiedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-        audit.setModifiedAt(LocalDateTime.now());
-        try {
-            audit.setEntityJson(objectMapper.writeValueAsString(oldEntity));
-            audit.setNewEntityJson(objectMapper.writeValueAsString(newEntity));
-        } catch (JsonProcessingException e) {
-            // Обработка ошибки
-        }
-        auditRepository.save(audit);
-    }
-
-    @Override
-    public AuditDto getAudit(Long id) {
-        Audit audit = auditRepository.findById(id).orElseThrow();
-        return auditMapper.toDto(audit);
-    }
-
 }

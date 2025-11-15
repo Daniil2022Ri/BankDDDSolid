@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface AuditService {
 
-    void logCreate(String entityType, Object newEntity);
-    void logUpdate(String entityType, Object oldEntity, Object newEntity);
-    AuditDto getAudit(Long id);
+
 
 }
