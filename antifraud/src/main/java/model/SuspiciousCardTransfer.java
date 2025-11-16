@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
 @Table(name = "card_transfer_id")
 public class SuspiciousCardTransfer {
 
@@ -15,7 +16,7 @@ public class SuspiciousCardTransfer {
     private Long id;
 
     @Column(name = "is_blocked")
-    private boolean cardBlocked;
+    private boolean blocked;
 
     @Column(name = "is_suspicious")
     private boolean suspicious;

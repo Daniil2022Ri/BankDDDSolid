@@ -25,7 +25,7 @@ public class SuspiciousAccountTransfer {
     private boolean suspicious;
 
     @Column(name = "bloked_reason")
-    private String blokedReason;
+    private String blockedReason;
 
     @Column(name = "suspicious_reason")
     private String suspiciousReason;

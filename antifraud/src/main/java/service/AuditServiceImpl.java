@@ -28,18 +28,38 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AuditServiceImpl implements AuditService {
 
-    @Autowired
-    private final SuspiciousAccountTransferRepository accountTransferRepository;
-    @Autowired
-    private final AuditMapper auditMapper;
-    @Autowired
-    private final SuspiciousTransferMapper suspiciousTransferMapper;
-    @Autowired
     private final AuditRepository auditRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final AuditMapper auditMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void logCreate(String entityType, Object newEntity) {
+    public void logCreate(String entityType, Object newEntity, String username) {
+        Audit audit = new Audit();
+        audit.setEntityType(entityType);
+        audit.setOperationType("CREATE");
+        audit.setCreatedBy(username);
+        audit.setCreatedAt(LocalTime.now());
+        audit.setNewEntityJson(toJson(newEntity));
+        auditRepository.save(audit);
+    }
+
+    @Override
+    public void logUpdate(String entityType, Object oldEntity, Object newEntity, String username) {
+        Audit audit = new Audit();
+        audit.setEntityType(entityType);
+        audit.setOperationType("UPDATE");
+        audit.setModifiedBy(username);
+        audit.setModifiedAt(LocalTime.now());
+        audit.setEntityJson(toJson(oldEntity));
+        audit.setNewEntityJson(toJson(newEntity));
+        auditRepository.save(audit);
+    }
+
+    private String toJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            return "{}";
+        }
     }
 }
