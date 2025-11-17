@@ -4,11 +4,10 @@ import dto.SuspiciousAccountTransferDto;
 import dto.SuspiciousCardTransferDto;
 import dto.SuspiciousPhoneTransferDto;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.SuspiciousTransferService;
-import service.SuspiciousTransferServiceImpl;
+
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class SuspiciousTransferController {
 
     @DeleteMapping("/{type}/{id}")
     public ResponseEntity<Void> delete(@PathVariable String type, @PathVariable Long id) {
-        service.delete(id, type);
+        service.deleteSuspiciousTransfer(id, type);
         return ResponseEntity.noContent().build();
     }
 

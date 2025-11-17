@@ -5,25 +5,27 @@ import dto.SuspiciousCardTransferDto;
 import dto.SuspiciousPhoneTransferDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mapers.SuspiciousTransferMapper;
 import model.SuspiciousAccountTransfer;
 import model.SuspiciousCardTransfer;
 import model.SuspiciousPhoneTransfer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.SuspiciousAccountTransferRepository;
 import repository.SuspiciousCardTransferRepository;
 import repository.SuspiciousPhoneTransferRepository;
 
-import java.math.BigDecimal;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
+@Slf4j
 @AllArgsConstructor
 public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
+
     private final SuspiciousCardTransferRepository cardRepo;
     private final SuspiciousPhoneTransferRepository phoneRepo;
     private final SuspiciousAccountTransferRepository accountRepo;
@@ -31,6 +33,8 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
 
     @Override
     public SuspiciousCardTransferDto createCard(SuspiciousCardTransferDto dto) {
+
+        log.info("Создание подозрительной транзакции в модели Карты: Card={id}");
         SuspiciousCardTransfer entity = mapper.toCardEntity(dto);
         return mapper.toCardDto(cardRepo.save(entity));
     }
@@ -50,7 +54,7 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
     @Override
     public SuspiciousCardTransferDto updateCard(Long id, SuspiciousCardTransferDto dto) {
         SuspiciousCardTransfer entity = cardRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card transfer not found: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на карту не найден: " + id));
         entity.setBlocked(dto.isBlocked());
         entity.setSuspicious(dto.isSuspicious());
         entity.setBlockedReason(dto.getBlockedReason());
@@ -61,20 +65,20 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
     @Override
     public SuspiciousPhoneTransferDto updatePhone(Long id, SuspiciousPhoneTransferDto dto) {
         SuspiciousPhoneTransfer entity = phoneRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card transfer not found: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на телефон не найден: " + id));
         entity.setBlocked(dto.isBlocked());
-                entity.setSuspicious(dto.isSuspicious());
-                entity.setBlockedReason(dto.getBlockedReason());
-                entity.setSuspiciousReason(dto.getSuspiciousReason());
+        entity.setSuspicious(dto.isSuspicious());
+        entity.setBlockedReason(dto.getBlockedReason());
+        entity.setSuspiciousReason(dto.getSuspiciousReason());
         return mapper.toPhoneDto(phoneRepo.save(entity));
     }
 
     @Override
     public SuspiciousAccountTransferDto updateAccount(Long id, SuspiciousAccountTransferDto dto) {
         SuspiciousAccountTransfer entity = accountRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card transfer not found: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на аккаунт не найден: " + id));
         entity.setBlocked(dto.isBlocked());
-                entity.setSuspicious(dto.isSuspicious());
+        entity.setSuspicious(dto.isSuspicious());
         entity.setBlockedReason(dto.getBlockedReason());
         entity.setSuspiciousReason(dto.getSuspiciousReason());
         return mapper.toAccountDto(accountRepo.save(entity));
@@ -83,12 +87,12 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
 
 
     @Override
-    public void delete(Long id, String type) {
+    public void deleteSuspiciousTransfer(Long id, String type) {
         switch (type.toLowerCase()) {
             case "card" -> cardRepo.deleteById(id);
             case "phone" -> phoneRepo.deleteById(id);
             case "account" -> accountRepo.deleteById(id);
-            default -> throw new IllegalArgumentException("Invalid type: " + type);
+            default -> throw new IllegalArgumentException("Ошибка запроса удаления: " + type);
         }
     }
 
@@ -98,17 +102,17 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
             case "card" -> cardRepo.findAll().stream().map(mapper::toCardDto).toList();
             case "phone" -> phoneRepo.findAll().stream().map(mapper::toPhoneDto).toList();
             case "account" -> accountRepo.findAll().stream().map(mapper::toAccountDto).toList();
-            default -> throw new IllegalArgumentException("Invalid type");
+            default -> throw new IllegalArgumentException("Ошибка запроса на получение:" + type);
         };
     }
 
     @Override
     public Object getById(Long id, String type) {
         return switch (type.toLowerCase()) {
-            case "card" -> mapper.toCardDto(cardRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Card not found")));
-            case "phone" -> mapper.toPhoneDto(phoneRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Phone not found")));
-            case "account" -> mapper.toAccountDto(accountRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Account not found")));
-            default -> throw new IllegalArgumentException("Invalid type");
+            case "card" -> mapper.toCardDto(cardRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Карта не найдена")));
+            case "phone" -> mapper.toPhoneDto(phoneRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Телефон не найден")));
+            case "account" -> mapper.toAccountDto(accountRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Аккаунт не найден")));
+            default -> throw new IllegalArgumentException("Ошибка запроса на получение по ID:" + type);
         };
     }
 }

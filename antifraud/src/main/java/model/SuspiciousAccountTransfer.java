@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "Account_transfets")
+@Table(name = "Account_transfers")
 public class SuspiciousAccountTransfer {
 
     @Id
@@ -24,7 +24,7 @@ public class SuspiciousAccountTransfer {
     @Column(name = "suspicious")
     private boolean suspicious;
 
-    @Column(name = "bloked_reason")
+    @Column(name = "blocked_reason")
     private String blockedReason;
 
     @Column(name = "suspicious_reason")
