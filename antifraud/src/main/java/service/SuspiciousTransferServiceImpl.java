@@ -17,6 +17,7 @@ import repository.SuspiciousCardTransferRepository;
 import repository.SuspiciousPhoneTransferRepository;
 
 
+
 import java.util.List;
 
 
@@ -32,62 +33,111 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
     private final SuspiciousTransferMapper mapper;
 
     @Override
-    public SuspiciousCardTransferDto createCard(SuspiciousCardTransferDto dto) {
-
-        log.info("Создание подозрительной транзакции в модели Карты: Card={id}");
-        SuspiciousCardTransfer entity = mapper.toCardEntity(dto);
-        return mapper.toCardDto(cardRepo.save(entity));
+    public SuspiciousCardTransferDto createCard(SuspiciousCardTransferDto CardDto) {
+        log.info("Создание Подозрительной транзакции Карты: {}" , CardDto.getId());
+        try{
+            SuspiciousCardTransfer entity = mapper.toCardEntity(CardDto);
+            log.info("Детали создания подозрительной транзакции Карты: id={} , blockedReason={} ", CardDto.getId() ,CardDto.getBlockedReason());
+            return mapper.toCardDto(cardRepo.save(entity));
+        }catch(Exception errorMassage){
+            log.error("Ошибка при создании подозрительно транзакции карты: {}" ,
+                    CardDto.getId() , errorMassage);
+            throw errorMassage;
+        }
     }
 
     @Override
-    public SuspiciousPhoneTransferDto createPhone(SuspiciousPhoneTransferDto dto) {
-        SuspiciousPhoneTransfer entity = mapper.toPhoneEntity(dto);
-        return mapper.toPhoneDto(phoneRepo.save(entity));
+    public SuspiciousPhoneTransferDto createPhone(SuspiciousPhoneTransferDto PhoneDto) {
+        log.info("Создание подозрительной транзакции карты: {}" ,PhoneDto.getId() );
+        try{
+            SuspiciousPhoneTransfer entity = mapper.toPhoneEntity(PhoneDto);
+            log.info("Детали создания подозрительной транзакции Телефона: ip={}" ,PhoneDto.getId());
+            return mapper.toPhoneDto(phoneRepo.save(entity));
+        } catch (Exception errorMassage) {
+            log.error("Ошибка при создании подозрительной транзакции Телефона: ip={}" , PhoneDto.getId(), errorMassage);
+            throw errorMassage;
+        }
+
     }
 
     @Override
-    public SuspiciousAccountTransferDto createAccount(SuspiciousAccountTransferDto dto) {
-        SuspiciousAccountTransfer entity = mapper.toAccountEntity(dto);
-        return mapper.toAccountDto(accountRepo.save(entity));
+    public SuspiciousAccountTransferDto createAccount(SuspiciousAccountTransferDto AccountDto) {
+        log.info("Создание подозрительной транзакции Аккаунта: id={}" , AccountDto.getId());
+        try{
+            SuspiciousAccountTransfer entity = mapper.toAccountEntity(AccountDto);
+            log.info("Детали создания подозрительной транзакции Аккаунта: id={}" , AccountDto.getId());
+            return mapper.toAccountDto(accountRepo.save(entity));
+        } catch (Exception errorMassage) {
+            log.error("Ошбика при создании подозрительной транзакции Аккаунта: ip={}" , AccountDto.getId(),errorMassage);
+            throw errorMassage;
+        }
+
     }
 
     @Override
-    public SuspiciousCardTransferDto updateCard(Long id, SuspiciousCardTransferDto dto) {
+    public SuspiciousCardTransferDto updateCard(Long id, SuspiciousCardTransferDto CardDto) {
+        log.info("Обновление данных подозрительной транзакции Карты: id={}" , CardDto.getId());
         SuspiciousCardTransfer entity = cardRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на карту не найден: " + id));
-        entity.setBlocked(dto.isBlocked());
-        entity.setSuspicious(dto.isSuspicious());
-        entity.setBlockedReason(dto.getBlockedReason());
-        entity.setSuspiciousReason(dto.getSuspiciousReason());
-        return mapper.toCardDto(cardRepo.save(entity));
+        try{
+            entity.setBlocked(CardDto.isBlocked());
+            entity.setSuspicious(CardDto.isSuspicious());
+            entity.setBlockedReason(CardDto.getBlockedReason());
+            entity.setSuspiciousReason(CardDto.getSuspiciousReason());
+            log.info("Обновление Данных Карты: id={} , блокировка={}, Причина Блокировки={} , Причина Подозрительности={}",
+                    CardDto.getId(), CardDto.isBlocked(), CardDto.isSuspicious() , CardDto.getBlockedReason() , CardDto.getSuspiciousReason());
+            return mapper.toCardDto(cardRepo.save(entity));
+        }catch (Exception errorMassage){
+            log.error("Ошибка Обновления данных Карты: id={}", CardDto.getId() , errorMassage);
+            throw errorMassage;
+        }
+
     }
 
     @Override
-    public SuspiciousPhoneTransferDto updatePhone(Long id, SuspiciousPhoneTransferDto dto) {
+    public SuspiciousPhoneTransferDto updatePhone(Long id, SuspiciousPhoneTransferDto PhoneDto) {
+        log.info("Обновление данных подозрительных транзакций Телефона: id={}", PhoneDto.getId());
         SuspiciousPhoneTransfer entity = phoneRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на телефон не найден: " + id));
-        entity.setBlocked(dto.isBlocked());
-        entity.setSuspicious(dto.isSuspicious());
-        entity.setBlockedReason(dto.getBlockedReason());
-        entity.setSuspiciousReason(dto.getSuspiciousReason());
-        return mapper.toPhoneDto(phoneRepo.save(entity));
+        try{
+            log.info("Обновление Данных Телефона: id={} , Блокировка={} , Причина Блокировки={} , Причина Подозрительности={}",
+                    PhoneDto.getId() , PhoneDto.isBlocked() , PhoneDto.isSuspicious() , PhoneDto.getBlockedReason() , PhoneDto.getSuspiciousReason());
+            entity.setBlocked(PhoneDto.isBlocked());
+            entity.setSuspicious(PhoneDto.isSuspicious());
+            entity.setBlockedReason(PhoneDto.getBlockedReason());
+            entity.setSuspiciousReason(PhoneDto.getSuspiciousReason());
+            return mapper.toPhoneDto(phoneRepo.save(entity));
+        }catch (Exception errorMassage){
+            log.error("Ошибка Обновления Данных Телефона: id={}" , PhoneDto.getId() , errorMassage);
+            throw errorMassage;
+        }
+
     }
 
     @Override
-    public SuspiciousAccountTransferDto updateAccount(Long id, SuspiciousAccountTransferDto dto) {
+    public SuspiciousAccountTransferDto updateAccount(Long id, SuspiciousAccountTransferDto AccountDto) {
         SuspiciousAccountTransfer entity = accountRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Подозрительный перевод на аккаунт не найден: " + id));
-        entity.setBlocked(dto.isBlocked());
-        entity.setSuspicious(dto.isSuspicious());
-        entity.setBlockedReason(dto.getBlockedReason());
-        entity.setSuspiciousReason(dto.getSuspiciousReason());
-        return mapper.toAccountDto(accountRepo.save(entity));
+        try{
+            log.info("Обновление Данных Аккаунта: id={} , Блокировка={} , Причина Блокировки={} , Причина Подозрительности={}",
+                    AccountDto.getId() , AccountDto.isBlocked() , AccountDto.isSuspicious() , AccountDto.getBlockedReason() , AccountDto.getSuspiciousReason());
+            entity.setBlocked(AccountDto.isBlocked());
+            entity.setSuspicious(AccountDto.isSuspicious());
+            entity.setBlockedReason(AccountDto.getBlockedReason());
+            entity.setSuspiciousReason(AccountDto.getSuspiciousReason());
+            return mapper.toAccountDto(accountRepo.save(entity));
+        }catch(Exception errorMassage){
+            log.error("Ошибка Обновление Данных Аккаунта: id={}",AccountDto.getId() , errorMassage);
+            throw errorMassage;
+        }
+
     }
 
 
 
     @Override
     public void deleteSuspiciousTransfer(Long id, String type) {
+        log.info("Удаление Подозрительных транзакций");
         switch (type.toLowerCase()) {
             case "card" -> cardRepo.deleteById(id);
             case "phone" -> phoneRepo.deleteById(id);
@@ -98,6 +148,7 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
 
     @Override
     public List<?> getAll(String type) {
+        log.info("Получение всех подозрительных транзакций");
         return switch (type.toLowerCase()) {
             case "card" -> cardRepo.findAll().stream().map(mapper::toCardDto).toList();
             case "phone" -> phoneRepo.findAll().stream().map(mapper::toPhoneDto).toList();
@@ -108,6 +159,7 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
 
     @Override
     public Object getById(Long id, String type) {
+        log.info("Получение по id:");
         return switch (type.toLowerCase()) {
             case "card" -> mapper.toCardDto(cardRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Карта не найдена")));
             case "phone" -> mapper.toPhoneDto(phoneRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Телефон не найден")));

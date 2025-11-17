@@ -3,12 +3,14 @@ package model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @Table(name = "Account_transfers")
 public class SuspiciousAccountTransfer {
