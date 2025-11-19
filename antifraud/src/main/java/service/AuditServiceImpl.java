@@ -3,25 +3,21 @@ package service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mapers.AuditMapper;
 import model.Audit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.AuditRepository;
 
 
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class AuditServiceImpl implements AuditService {
 
     @Autowired
