@@ -155,51 +155,136 @@ public class SuspiciousTransferController {
         };
     }
     */
+    @Operation(
+            summary = "Удалить подозрительную транзакцию карты",
+            description = "Удаляет подозрительную транзакцию карты по ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Транзакция успешно удалена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @DeleteMapping("/card/{id}")
-    public ResponseEntity<Void> deleteCard(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCard(
+            @Parameter(description = "ID транзакции", required = true, example = "1")
+            @PathVariable Long id) {
         service.deleteSuspiciousTransfer(id, "card");
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Удалить подозрительную транзакцию Телефона",
+            description = "Удаляет подозрительную транзакцию Телефона по ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Транзакция успешно удалена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @DeleteMapping("/phone/{id}")
-    public ResponseEntity<Void> deletePhone(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePhone(
+        @Parameter(description = "ID транзакции", required = true, example = "1")
+        @PathVariable Long id) {
         service.deleteSuspiciousTransfer(id, "phone");
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Удалить подозрительную транзакцию Аккаунта",
+            description = "Удаляет подозрительную транзакцию Аккаунта по ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Транзакция успешно удалена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @DeleteMapping("/account/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAccount(
+            @Parameter(description = "ID транзакции", required = true, example = "1")
+            @PathVariable Long id) {
         service.deleteSuspiciousTransfer(id, "account");
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Получить все подозрительные транзакции карт",
+            description = "Возвращает список всех подозрительных транзакций карт"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Список транзакций успешно получен"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/card")
     public ResponseEntity<List<SuspiciousCardTransferDto>> getAllCards() {
-        return ResponseEntity.ok(service.getAllCards());
+        List<SuspiciousCardTransferDto> result = service.getAllCards();
+        return ResponseEntity.ok(result);
     }
 
+    @Operation(
+            summary = "Получить все подозрительные транзакции Телефона",
+            description = "Возвращает список всех подозрительных транзакций Телефона"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Список транзакций успешно получен"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/phone")
     public ResponseEntity<List<SuspiciousPhoneTransferDto>> getAllPhones() {
         return ResponseEntity.ok(service.getAllPhones());
     }
 
+    @Operation(
+            summary = "Получить все подозрительные транзакции Аккаунта",
+            description = "Возвращает список всех подозрительных транзакций Аккаунта"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Список транзакций успешно получен"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/account")
     public ResponseEntity<List<SuspiciousAccountTransferDto>> getAllAccounts() {
         return ResponseEntity.ok(service.getAllAccounts());
     }
 
+    @Operation(
+            summary = "Получить подозрительную транзакцию карты по ID",
+            description = "Возвращает подозрительную транзакцию карты по указанному ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Транзакция найдена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/card/{id}")
-    public ResponseEntity<SuspiciousCardTransferDto> getCardById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getCardById(id));
+    public ResponseEntity<SuspiciousCardTransferDto> getCardById(
+            @Parameter(description = "ID транзакции", required = true, example = "1")
+            @PathVariable Long id) {
+        SuspiciousCardTransferDto result = service.getCardById(id);
+        return ResponseEntity.ok(result);
     }
 
+    @Operation(
+            summary = "Получить подозрительную транзакцию Телефона по ID",
+            description = "Возвращает подозрительную транзакцию Телефона по указанному ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Транзакция найдена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/phone/{id}")
-    public ResponseEntity<SuspiciousPhoneTransferDto> getPhoneById(@PathVariable Long id) {
+    public ResponseEntity<SuspiciousPhoneTransferDto> getPhoneById(
+            @Parameter(description = "ID транзакции", required = true, example = "1")
+            @PathVariable Long id) {
         return ResponseEntity.ok(service.getPhoneById(id));
     }
-
+    @Operation(
+            summary = "Получить подозрительную транзакцию Аккаунта по ID",
+            description = "Возвращает подозрительную транзакцию Аккаунта по указанному ID"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Транзакция найдена"),
+            @ApiResponse(responseCode = "404", description = "Транзакция не найдена")
+    })
     @GetMapping("/account/{id}")
-    public ResponseEntity<SuspiciousAccountTransferDto> getAccountById(@PathVariable Long id) {
+    public ResponseEntity<SuspiciousAccountTransferDto> getAccountById(
+            @Parameter(description = "ID транзакции", required = true, example = "1")
+            @PathVariable Long id) {
         return ResponseEntity.ok(service.getAccountById(id));
     }
 }
