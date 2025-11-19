@@ -12,7 +12,7 @@ import lombok.Data;
 public class SuspiciousAccountTransferDto {
     private Long id;
     private boolean blocked;
-    private boolean isSuspicious;
+    private boolean suspicious;
     private String blockedReason;
     private String suspiciousReason;
 }

@@ -48,7 +48,7 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
 
     @Override
     public SuspiciousPhoneTransferDto createPhone(SuspiciousPhoneTransferDto PhoneDto) {
-        log.info("Создание подозрительной транзакции карты: {}" ,PhoneDto.getId() );
+        log.info("Создание подозрительной транзакции Телефона: {}" ,PhoneDto.getId() );
         try{
             SuspiciousPhoneTransfer entity = mapper.toPhoneEntity(PhoneDto);
             log.info("Детали создания подозрительной транзакции Телефона: ip={}" ,PhoneDto.getId());
@@ -167,4 +167,53 @@ public class SuspiciousTransferServiceImpl implements SuspiciousTransferService{
             default -> throw new IllegalArgumentException("Ошибка запроса на получение по ID:" + type);
         };
     }
+
+
+
+    @Override
+    public List<SuspiciousCardTransferDto> getAllCards() {
+        log.info("Получение всех подозрительных карточных транзакций");
+        return cardRepo.findAll().stream()
+                .map(mapper::toCardDto)
+                .toList();
+    }
+
+    @Override
+    public List<SuspiciousPhoneTransferDto> getAllPhones() {
+        log.info("Получение всех подозрительных телефонных транзакций");
+        return phoneRepo.findAll().stream()
+                .map(mapper::toPhoneDto)
+                .toList();
+    }
+
+    @Override
+    public List<SuspiciousAccountTransferDto> getAllAccounts() {
+        log.info("Получение всех подозрительных аккаунтных транзакций");
+        return accountRepo.findAll().stream()
+                .map(mapper::toAccountDto)
+                .toList();
+    }
+
+    @Override
+    public SuspiciousCardTransferDto getCardById(Long id) {
+        log.info("Получение карточной транзакции по ID: {}", id);
+        return mapper.toCardDto(cardRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Карта не найдена")));
+    }
+
+    @Override
+    public SuspiciousPhoneTransferDto getPhoneById(Long id) {
+        log.info("Получение телефонной транзакции по ID: {}", id);
+        return mapper.toPhoneDto(phoneRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Телефон не найден")));
+    }
+
+    @Override
+    public SuspiciousAccountTransferDto getAccountById(Long id) {
+        log.info("Получение аккаунтной транзакции по ID: {}", id);
+        return mapper.toAccountDto(accountRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Аккаунт не найден")));
+    }
+
+
 }
