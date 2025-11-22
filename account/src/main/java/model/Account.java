@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;
 
-import java.time.LocalTime;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -30,11 +32,21 @@ public class Account {
     @Column(name = "modified" , length = 255)
     private String modifiedBy;
     @Column(name = "Time create")
-    private LocalTime createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "Time modified")
-    private LocalTime modifiedAt;
+    private LocalDateTime modifiedAt;
     @Column(name = "New Entity Json")
     private String newEntityJson;
     @Column(name = "Entity Json")
     private String entityJson;
+
+    @PrePersist
+    protected void onCreate(){
+        createdAt = LocalDateTime.now();
+        modifiedAt = LocalDateTime.now();
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        modifiedAt = LocalDateTime.now();
+    }
 }
