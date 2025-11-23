@@ -2,11 +2,14 @@ package service;
 
 import ExceptionHandling.EntityNotFoundException;
 import ExceptionHandling.ValidationException;
+import controller.HistoryController;
 import dto.HistoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mappers.HistoryMapper;
 import model.History;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.HistoryRepository;
