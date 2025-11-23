@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -33,4 +35,7 @@ public class History {
     private Long publicBankInfoAuditId;
     @Column(name = "authorization_audit_id")
     private Long authorizationAuditId;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
